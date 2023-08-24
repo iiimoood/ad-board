@@ -25,15 +25,25 @@ mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 app.use(helmet());
-app.use(cors());
+if (process.env.NODE_ENV !== 'production') {
+  app.use(
+    cors({
+      origin: ['http://localhost:3000'],
+      credentials: true,
+    })
+  );
+}
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   session({
-    secret: 'zxc123',
+    secret: `${process.env.SECRET_CODE}`,
     store: MongoStore.create(mongoose.connection),
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV == 'production',
+    },
   })
 );
 
