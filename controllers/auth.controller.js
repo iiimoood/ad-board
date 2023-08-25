@@ -74,5 +74,5 @@ exports.getUser = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  res.session.destroy();
+  req.session.destroy();
 };

@@ -55,6 +55,7 @@ const server = app.listen(process.env.PORT || 8000, () => {
 
 app.use('/api', adsRoutes);
 app.use('/api', authRoutes);
+app.use(express.static(path.join(__dirname, '/public')));
 
 db.once('open', () => {
   console.log('Connected to the database');

@@ -59,7 +59,10 @@ exports.putChanged = async (req, res) => {
 
   try {
     const ad = await Ad.findById(req.params.id).populate('seller');
+
     if (ad) {
+      const oldPhoto = ad.photo;
+
       ad.title = title;
       ad.content = content;
       ad.dateOfPublication = dateOfPublication;
@@ -67,7 +70,12 @@ exports.putChanged = async (req, res) => {
       ad.price = price;
       ad.location = location;
       ad.seller = seller;
+      if (req.file) {
+        ad.photo = req.file.filename;
+        fs.unlinkSync(`./public/uploads/${oldPhoto}`);
+      }
       const updatedAd = await ad.save();
+
       res.json({ message: 'OK', ad: updatedAd });
     } else res.status(404).json({ message: 'Not found...' });
   } catch (err) {

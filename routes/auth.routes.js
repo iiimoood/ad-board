@@ -6,7 +6,7 @@ const imageUpload = require('../utils/imageUpload');
 
 router.post(
   '/auth/register',
-  imageUpload.single(avatar),
+  imageUpload.single('avatar'),
   AuthController.register
 );
 router.post('/auth/login', AuthController.login);
