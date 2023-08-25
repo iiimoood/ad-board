@@ -24,12 +24,12 @@ exports.postNew = async (req, res) => {
   try {
     const { title, content, dateOfPublication, price, location, seller } =
       req.body;
+    const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
+
     if (
       req.file &&
       ['image/png', 'image/jpg', 'image.jpeg'].includes(fileType)
     ) {
-      const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
-
       const newAd = new Ad({
         title: title,
         content: content,
@@ -41,14 +41,16 @@ exports.postNew = async (req, res) => {
       });
       await newAd.save();
 
-      const ads = await Ad.find().populate('seller');
-      console.log(ads);
       res.json({ message: 'OK' });
     } else {
       fs.unlinkSync(req.file.path);
       res.status(400).send({ message: 'Bad request' });
     }
   } catch (err) {
+    console.log(err);
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     res.status(500).json({ message: err });
   }
 };
@@ -85,7 +87,7 @@ exports.putChanged = async (req, res) => {
 
 exports.deleteById = async (req, res) => {
   try {
-    const ad = await Ad.findById(req.params.id).populate('seller');
+    const ad = await Ad.findById(req.params.id);
     if (ad) {
       await Ad.deleteOne({ _id: req.params.id });
       res.json({ message: 'OK', ad: ad });

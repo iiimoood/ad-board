@@ -6,6 +6,8 @@ const fs = require('fs');
 exports.register = async (req, res) => {
   try {
     const { login, password, phone } = req.body;
+    const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
+
     if (
       login &&
       typeof login === 'string' &&
@@ -14,7 +16,6 @@ exports.register = async (req, res) => {
       req.file &&
       ['image/png', 'image/jpg', 'image.jpeg'].includes(fileType)
     ) {
-      const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
       const userWithLogin = await User.findOne({ login });
       if (userWithLogin) {
         return res
@@ -53,8 +54,8 @@ exports.login = async (req, res) => {
       } else {
         if (bcrypt.compareSync(password, user.password)) {
           req.session.user = {
-            login: req.session.login,
-            id: req.session.id,
+            login: login,
+            id: user.id,
           };
           res.status(200).send({ message: 'Login successful' });
         } else {
@@ -70,7 +71,7 @@ exports.login = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
-  res.send(req.session.login);
+  res.send(req.session.user.login);
 };
 
 exports.logout = async (req, res) => {
