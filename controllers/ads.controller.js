@@ -27,6 +27,16 @@ exports.postNew = async (req, res) => {
     const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
 
     if (
+      title &&
+      typeof title === 'string' &&
+      content &&
+      typeof content === 'string' &&
+      dateOfPublication &&
+      typeof dateOfPublication === 'date' &&
+      price &&
+      typeof price === 'number' &&
+      location &&
+      typeof location === 'string' &&
       req.file &&
       ['image/png', 'image/jpg', 'image.jpeg'].includes(fileType)
     ) {
