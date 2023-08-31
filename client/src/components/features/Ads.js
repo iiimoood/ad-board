@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { getAllAds } from '../../redux/adsRedux';
 import { NavLink } from 'react-router-dom';
-import {IMGS_URL} from '../../config';
+import { IMGS_URL } from '../../config';
 
 const Ads = () => {
   const ads = useSelector(getAllAds);
   return (
-    <div className="d-flex flex-wrap justify-content-between mr-1">
+    <section className="d-flex flex-wrap justify-content-between mr-1">
       {ads.map((ad) => (
-        <div key={ad.id} className="card col-12 col-md-6 col-lg-4 row">
+        <article key={ad.id} className="card col-12 col-md-6 col-lg-4 row">
           <div className="card-body">
             <h3 className="card-title">{ad.title}</h3>
             <p>
@@ -24,9 +24,9 @@ const Ads = () => {
               </NavLink>
             </button>
           </div>
-        </div>
+        </article>
       ))}
-    </div>
+    </section>
   );
 };
 

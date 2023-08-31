@@ -15,7 +15,7 @@ const initialState = {
       },
     },
   ],
-  users: [],
+  user: {},
 };
 
 export default initialState;
