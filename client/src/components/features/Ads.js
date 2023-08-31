@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { getAllAds } from '../../redux/adsRedux';
 import { NavLink } from 'react-router-dom';
+import IMGS_URL from '../../../config';
 
 const Ads = () => {
   const ads = useSelector(getAllAds);
@@ -13,7 +14,7 @@ const Ads = () => {
             <p>
               <span className="fw-bold">Location:</span> {ad.location}
             </p>
-            <img src={ad.photo} alt="" />
+            <img src={IMGS_URL + ad.photo} alt="" />
             <button type="button" className="btn btn-primary ">
               <NavLink
                 to={'/ads/' + ad.id}

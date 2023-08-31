@@ -6,6 +6,7 @@ import { removeCard } from '../../redux/adsRedux';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import DateToStr from '../../utils/dateToStr';
+import IMGS_URL from '../../../config'
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -38,10 +39,12 @@ const Ad = (props) => {
             <span className="fw-bold">Location:</span> {ad.location}
           </p>
           <p>
-            <span className="fw-bold">Seller:</span> {ad.seller}
+            <span className="fw-bold">Seller:</span> {ad.seller.login} Phone:{' '}
+            {ad.seller.phone}
           </p>
+          <img src={ad.seller.avatar} alt="" />
           <p dangerouslySetInnerHTML={{ __html: ad.content }} />
-          <img src={ad.photo} alt="" />
+          <img src={IMGS_URL + ad.photo} alt="" />
         </div>
         <div>
           <Link to={'/ad/edit/' + ad.id}>
