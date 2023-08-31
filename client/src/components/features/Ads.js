@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { getAllAds } from '../../redux/adsRedux';
 import { NavLink } from 'react-router-dom';
-import IMGS_URL from '../../../config';
+import {IMGS_URL} from '../../config';
 
 const Ads = () => {
   const ads = useSelector(getAllAds);
