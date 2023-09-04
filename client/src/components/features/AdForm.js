@@ -6,19 +6,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
 
-function MyComponent() {
-  const [value, setValue] = useState('');
-
-  return <ReactQuill theme="snow" value={value} onChange={setValue} />;
-}
-
-const Date = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  return (
-    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-  );
-};
-
 const AdForm = ({ action, actionText, ...props }) => {
   const {
     register,
@@ -36,12 +23,22 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [content, setContent] = useState(props.content || '');
   const [contentError, setContentError] = useState(false);
   const [dateError, setDateError] = useState(false);
+  const [photo, setPhoto] = useState(props.photo || null);
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
     setContentError(!content);
     setDateError(!dateOfPublication);
     if (content && dateOfPublication) {
-      action({ title, dateOfPublication, location, seller, content });
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('dateOfPublication', dateOfPublication);
+      formData.append('price', price);
+      formData.append('location', location);
+      formData.append('seller', seller);
+      formData.append('content', content);
+      formData.append('photo', photo);
+
+      await action(formData);
     }
   };
   return (
@@ -139,6 +136,15 @@ const AdForm = ({ action, actionText, ...props }) => {
             Content can't be empty
           </small>
         )}
+      </div>
+      <div className="form-group mb-2">
+        <label>Photo</label>
+        <input
+          type="file"
+          className="form-control-file"
+          id="photo"
+          onChange={(e) => setPhoto(e.target.files[0])}
+        />
       </div>
       <button type="submit" className="btn btn-primary">
         {actionText}

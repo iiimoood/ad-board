@@ -3,7 +3,7 @@ export const getAllAds = ({ ads }) => ads;
 export const getAdById = ({ ads }, adId) => ads.find((ad) => ad.id === adId);
 
 // actions
-const createActionName = (actionName) => `app/posts/${actionName}`;
+const createActionName = (actionName) => `app/ads/${actionName}`;
 const ADD_AD = createActionName('ADD_AD');
 const EDIT_AD = createActionName('EDIT_AD');
 const REMOVE_AD = createActionName('REMOVE_AD');
