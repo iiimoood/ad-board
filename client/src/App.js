@@ -10,6 +10,7 @@ import AdEdit from './components/pages/AdEdit';
 import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import Logout from './components/pages/Logout';
+import SearchResults from './components/pages/SearchResults';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/auth/register" element={<Register />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/logout" element={<Logout />} />
+        <Route path="/ads/search/:searchPhrase" element={<SearchResults />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

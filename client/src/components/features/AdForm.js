@@ -19,11 +19,14 @@ const AdForm = ({ action, actionText, ...props }) => {
   );
   const [price, setPrice] = useState(props.price || '');
   const [location, setLocation] = useState(props.location || '');
-  const [seller, setSeller] = useState(props.seller || '');
   const [content, setContent] = useState(props.content || '');
   const [contentError, setContentError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [photo, setPhoto] = useState(props.photo || null);
+  const [login, setLogin] = useState(props.seller ? props.seller.login || '' : '');
+  const [phone, setPhone] = useState(props.seller ? props.seller.phone || '' : '');
+  const [avatar, setAvatar] = useState(props.seller ? props.seller.avatar || null : null);
+
 
   const handleSubmit = async (e) => {
     setContentError(!content);
@@ -34,9 +37,11 @@ const AdForm = ({ action, actionText, ...props }) => {
       formData.append('dateOfPublication', dateOfPublication);
       formData.append('price', price);
       formData.append('location', location);
-      formData.append('seller', seller);
       formData.append('content', content);
       formData.append('photo', photo);
+      formData.append('seller[login]', login);
+      formData.append('seller[phone]', phone);
+      formData.append('seller[avatar]', avatar);
 
       await action(formData);
     }
@@ -106,22 +111,44 @@ const AdForm = ({ action, actionText, ...props }) => {
           </small>
         )}
       </div>
+      <label>Seller</label>
       <div className="form-group mb-2">
-        <label>Seller</label>
+        <label>Login</label>
         <input
-          {...register('seller', { required: true })}
+          {...register('login', { required: true })}
           type="text"
           className="form-control w-25"
-          id="seller"
-          placeholder="Enter seller"
-          onChange={(e) => setSeller(e.target.value)}
-          value={seller}
+          id="login"
+          placeholder="Enter login"
+          onChange={(e) => setLogin(e.target.value)}
+          value={login}
         />
-        {errors.seller && (
+        {errors.login && (
           <small className="d-block form-text text-danger mt-2">
-            Seller can't be empty
+            Login can't be empty
           </small>
         )}
+        <input
+          {...register('phone', { required: true })}
+          type="text"
+          className="form-control w-25"
+          id="phone"
+          placeholder="Enter phone"
+          onChange={(e) => setPhone(e.target.value)}
+          value={phone}
+        />
+        {errors.phone && (
+          <small className="d-block form-text text-danger mt-2">
+            Phone can't be empty
+          </small>
+        )}
+        <label>Avatar</label>
+        <input
+          type="file"
+          className="form-control-file"
+          id="avatar"
+          onChange={(e) => setAvatar(e.target.files[0])}
+        />
       </div>
       <div className="form-group mb-2">
         <label>Content</label>

@@ -6,7 +6,9 @@ import { removeCard } from '../../redux/adsRedux';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import DateToStr from '../../utils/dateToStr';
-import { IMGS_URL } from '../../config';
+import { IMGS_URL, API_URL } from '../../config';
+import { getUser } from '../../redux/usersRedux';
+import { useNavigate } from 'react-router-dom';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -16,10 +18,23 @@ const Ad = (props) => {
   const ad = useSelector((state) => getAdById(state, adId));
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const user = useSelector(getUser);
+  const navigate = useNavigate();
 
   const deleteAd = (e) => {
     e.preventDefault();
-    dispatch(removeCard(ad.id));
+
+    const options = {
+      method: 'DELETE',
+      credentials: 'include',
+    };
+
+    fetch(`${API_URL}/ads/:id`, options).then(() => {
+      dispatch(removeCard(ad.id));
+      setTimeout(() => {
+        navigate('/');
+      }, 10);
+    });
   };
 
   if (!ad) return <Navigate to="/" />;
@@ -46,20 +61,22 @@ const Ad = (props) => {
           <p dangerouslySetInnerHTML={{ __html: ad.content }} />
           <img src={IMGS_URL + ad.photo} alt="" />
         </div>
-        <div>
-          <Link to={'/ad/edit/' + ad.id}>
-            <button type="button" className="btn btn-outline-primary me-2">
-              Edit
+        {user === ad.seller.login && (
+          <div>
+            <Link to={'/ad/edit/' + ad.id}>
+              <button type="button" className="btn btn-outline-primary me-2">
+                Edit
+              </button>
+            </Link>
+            <button
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={() => setShowModal(true)}
+            >
+              Delete
             </button>
-          </Link>
-          <button
-            type="button"
-            className="btn btn-outline-danger"
-            onClick={() => setShowModal(true)}
-          >
-            Delete
-          </button>
-        </div>
+          </div>
+        )}
       </div>
 
       {showModal && (
