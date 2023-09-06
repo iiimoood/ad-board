@@ -22,19 +22,23 @@ exports.getById = async (req, res) => {
 
 exports.postNew = async (req, res) => {
   try {
-    const { title, content, dateOfPublication, price, location, seller } =
-      req.body;
+    const { title, content, dateOfPublication, price, location } = req.body;
     const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
-
+    console.log(
+      typeof title === 'string',
+      typeof content === 'string',
+      typeof dateOfPublication === 'date',
+      typeof price === 'number'
+    );
     if (
       title &&
       typeof title === 'string' &&
       content &&
       typeof content === 'string' &&
       dateOfPublication &&
-      typeof dateOfPublication === 'date' &&
+      typeof new Date(dateOfPublication) === 'date' &&
       price &&
-      typeof price === 'number' &&
+      typeof parseInt(price) === 'number' &&
       location &&
       typeof location === 'string' &&
       req.file &&
@@ -47,7 +51,7 @@ exports.postNew = async (req, res) => {
         photo: req.file.filename,
         price: price,
         location: location,
-        seller: seller,
+        seller: req.session.user.id,
       });
       await newAd.save();
 

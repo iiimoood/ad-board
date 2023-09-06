@@ -23,29 +23,27 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [contentError, setContentError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [photo, setPhoto] = useState(props.photo || null);
-  const [login, setLogin] = useState(props.seller ? props.seller.login || '' : '');
-  const [phone, setPhone] = useState(props.seller ? props.seller.phone || '' : '');
-  const [avatar, setAvatar] = useState(props.seller ? props.seller.avatar || null : null);
-
 
   const handleSubmit = async (e) => {
     setContentError(!content);
     setDateError(!dateOfPublication);
-    if (content && dateOfPublication) {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('dateOfPublication', dateOfPublication);
-      formData.append('price', price);
-      formData.append('location', location);
-      formData.append('content', content);
-      formData.append('photo', photo);
-      formData.append('seller[login]', login);
-      formData.append('seller[phone]', phone);
-      formData.append('seller[avatar]', avatar);
+    const handleSubmit = async (e) => {
+      setContentError(!content);
+      setDateError(!dateOfPublication);
+      if (content && dateOfPublication) {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('dateOfPublication', dateOfPublication);
+        formData.append('price', price);
+        formData.append('location', location);
+        formData.append('content', content);
+        formData.append('photo', photo);
 
-      await action(formData);
-    }
+        await action(formData);
+      }
+    };
   };
+
   return (
     <form onSubmit={validate(handleSubmit)}>
       <div className="form-group mb-2">
@@ -110,45 +108,6 @@ const AdForm = ({ action, actionText, ...props }) => {
             Location can't be empty
           </small>
         )}
-      </div>
-      <label>Seller</label>
-      <div className="form-group mb-2">
-        <label>Login</label>
-        <input
-          {...register('login', { required: true })}
-          type="text"
-          className="form-control w-25"
-          id="login"
-          placeholder="Enter login"
-          onChange={(e) => setLogin(e.target.value)}
-          value={login}
-        />
-        {errors.login && (
-          <small className="d-block form-text text-danger mt-2">
-            Login can't be empty
-          </small>
-        )}
-        <input
-          {...register('phone', { required: true })}
-          type="text"
-          className="form-control w-25"
-          id="phone"
-          placeholder="Enter phone"
-          onChange={(e) => setPhone(e.target.value)}
-          value={phone}
-        />
-        {errors.phone && (
-          <small className="d-block form-text text-danger mt-2">
-            Phone can't be empty
-          </small>
-        )}
-        <label>Avatar</label>
-        <input
-          type="file"
-          className="form-control-file"
-          id="avatar"
-          onChange={(e) => setAvatar(e.target.files[0])}
-        />
       </div>
       <div className="form-group mb-2">
         <label>Content</label>
