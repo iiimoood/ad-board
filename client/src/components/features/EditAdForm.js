@@ -33,7 +33,7 @@ const EditAdForm = () => {
     return () => {};
   };
 
-  if (!ad || ad.seller.login !== user) return <Navigate to="/" />;
+  if (!ad || ad.seller.login !== user.login) return <Navigate to="/" />;
   return (
     <AdForm
       action={handleSubmit}

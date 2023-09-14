@@ -5,6 +5,8 @@ import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../redux/usersRedux';
 
 const AdForm = ({ action, actionText, ...props }) => {
   const {
@@ -23,25 +25,23 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [contentError, setContentError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [photo, setPhoto] = useState(props.photo || null);
+  const user = useSelector(getUser);
 
   const handleSubmit = async (e) => {
     setContentError(!content);
     setDateError(!dateOfPublication);
-    const handleSubmit = async (e) => {
-      setContentError(!content);
-      setDateError(!dateOfPublication);
-      if (content && dateOfPublication) {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('dateOfPublication', dateOfPublication);
-        formData.append('price', price);
-        formData.append('location', location);
-        formData.append('content', content);
-        formData.append('photo', photo);
+    if (content && dateOfPublication) {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('dateOfPublication', dateOfPublication);
+      formData.append('price', price);
+      formData.append('location', location);
+      formData.append('content', content);
+      formData.append('photo', photo);
+      formData.append('seller', user);
 
-        await action(formData);
-      }
-    };
+      await action(formData);
+    }
   };
 
   return (

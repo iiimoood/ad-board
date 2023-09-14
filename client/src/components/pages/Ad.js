@@ -59,9 +59,13 @@ const Ad = (props) => {
           </p>
           <img src={IMGS_URL + ad.seller.avatar} alt="" />
           <p dangerouslySetInnerHTML={{ __html: ad.content }} />
-          <img src={IMGS_URL + ad.photo} alt="" />
+          <img
+            src={IMGS_URL + ad.photo}
+            alt=""
+            style={{ width: '80%', height: '200px', objectFit: 'cover' }}
+          />
         </div>
-        {user === ad.seller.login && (
+        {user && user.login === ad.seller.login && (
           <div>
             <Link to={'/ad/edit/' + ad.id}>
               <button type="button" className="btn btn-outline-primary me-2">

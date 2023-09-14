@@ -14,7 +14,11 @@ const Ads = () => {
             <p>
               <span className="fw-bold">Location:</span> {ad.location}
             </p>
-            <img src={IMGS_URL + ad.photo} alt="" />
+            <img
+              src={IMGS_URL + ad.photo}
+              alt=""
+              style={{ width: '95%', height: '150px', objectFit: 'cover' }}
+            />
             <button type="button" className="btn btn-primary ">
               <NavLink
                 to={'/ads/' + ad.id}
