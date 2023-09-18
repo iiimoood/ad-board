@@ -12,11 +12,15 @@ const SearchAds = () => {
   };
 
   return (
-    <div>
+    <div className="col-12 col-sm-3 mx-auto d-flex align-items-center justify-content-between">
       <input
         type="text"
         placeholder="Search ad"
         value={searchPhrase}
+        style={{
+          height: '40px',
+          marginRight: '10px',
+        }}
         onChange={(e) => setSearchPhrase(e.target.value)}
       />
       <button onClick={handleSearch} type="button" className="btn btn-primary ">

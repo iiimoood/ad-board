@@ -8,7 +8,7 @@ const Ads = () => {
   return (
     <section className="d-flex flex-wrap justify-content-between mr-1">
       {ads.map((ad) => (
-        <article key={ad.id} className="card col-12 col-md-6 col-lg-4 row">
+        <article key={ad.id} className="card col-12 col-md-6 col-lg-4 row mb-2">
           <div className="card-body">
             <h3 className="card-title">{ad.title}</h3>
             <p>
@@ -17,7 +17,12 @@ const Ads = () => {
             <img
               src={IMGS_URL + ad.photo}
               alt=""
-              style={{ width: '95%', height: '150px', objectFit: 'cover' }}
+              style={{
+                width: '95%',
+                height: '150px',
+                objectFit: 'cover',
+                marginBottom: '20px',
+              }}
             />
             <button type="button" className="btn btn-primary ">
               <NavLink

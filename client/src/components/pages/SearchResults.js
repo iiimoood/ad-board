@@ -10,15 +10,14 @@ const SearchResults = () => {
   const ads = useSelector(getAllAds);
   const lowerLetterPhrase = searchPhrase.toLowerCase();
 
-  const filteredAds =
-    ads && ads.data
-      ? Object.values(ads.data).filter(
-          (ad) =>
-            ad.title.toLowerCase().includes(lowerLetterPhrase) ||
-            ad.content.toLowerCase().includes(lowerLetterPhrase) ||
-            ad.location.toLowerCase().includes(lowerLetterPhrase)
-        )
-      : [];
+  const filteredAds = ads
+    ? ads.filter(
+        (ad) =>
+          ad.title.toLowerCase().includes(lowerLetterPhrase) ||
+          ad.content.toLowerCase().includes(lowerLetterPhrase) ||
+          ad.location.toLowerCase().includes(lowerLetterPhrase)
+      )
+    : [];
 
   if (filteredAds.length === 0) {
     return (
@@ -43,7 +42,15 @@ const SearchResults = () => {
                   <p>
                     <span className="fw-bold">Location:</span> {ad.location}
                   </p>
-                  <img src={IMGS_URL + ad.photo} alt="" />
+                  <img
+                    src={IMGS_URL + ad.photo}
+                    alt=""
+                    style={{
+                      width: '80%',
+                      height: '200px',
+                      objectFit: 'cover',
+                    }}
+                  />
                   <button type="button" className="btn btn-primary ">
                     <NavLink
                       to={'/ads/' + ad.id}

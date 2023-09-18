@@ -1,10 +1,10 @@
 import { useDispatch } from 'react-redux';
-import { addAd } from '../../redux/adsRedux';
+import { addAd, fetchAds } from '../../redux/adsRedux';
 import { useNavigate } from 'react-router-dom';
 import AdForm from './AdForm';
 import { API_URL } from '../../config';
 
-const AddPostForm = () => {
+const AddAdForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = (ad) => {
@@ -16,10 +16,11 @@ const AddPostForm = () => {
     fetch(`${API_URL}/ads`, options).then((res) => {
       dispatch(addAd(ad));
       navigate('/');
+      dispatch(fetchAds());
     });
   };
 
   return <AdForm action={handleSubmit} actionText="Add ad" />;
 };
 
-export default AddPostForm;
+export default AddAdForm;

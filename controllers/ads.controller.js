@@ -24,19 +24,14 @@ exports.postNew = async (req, res) => {
   try {
     const { title, content, dateOfPublication, price, location } = req.body;
     const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
-    console.log(
-      typeof title === 'string',
-      typeof content === 'string',
-      typeof dateOfPublication === 'date',
-      typeof price === 'number'
-    );
+
     if (
       title &&
       typeof title === 'string' &&
       content &&
       typeof content === 'string' &&
       dateOfPublication &&
-      typeof new Date(dateOfPublication) === 'date' &&
+      new Date(dateOfPublication) instanceof Date &&
       price &&
       typeof parseInt(price) === 'number' &&
       location &&

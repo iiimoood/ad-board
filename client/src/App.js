@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home';
 import NotFound from './components/pages/NotFound';
-import { Container } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 import Footer from './components/views/Footer';
 import Header from './components/views/Header';
 import Ad from './components/pages/Ad';
@@ -11,8 +11,31 @@ import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import Logout from './components/pages/Logout';
 import SearchResults from './components/pages/SearchResults';
+import { fetchAds, getAdsLoading } from './redux/adsRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+
 
 const App = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector(getAdsLoading);
+
+  useEffect(() => dispatch(fetchAds()), [dispatch]);
+
+  if (loading) {
+    return (
+      <Container className="d-flex justify-content-center">
+        <div
+          className="d-flex align-items-center"
+          style={{ marginTop: '250px' }}
+        >
+          <Spinner animation="border" />
+        </div>
+      </Container>
+    );
+  }
+
+
   return (
     <Container>
       <Header />

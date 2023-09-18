@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const Ad = (props) => {
+const Ad = () => {
   const { adId } = useParams();
   const ad = useSelector((state) => getAdById(state, adId));
   const dispatch = useDispatch();
@@ -83,34 +83,27 @@ const Ad = (props) => {
         )}
       </div>
 
-      {showModal && (
-        <div
-          className="modal show"
-          style={{ display: 'block', position: 'initial' }}
-        >
-          <Modal.Dialog>
-            <Modal.Header closeButton>
-              <Modal.Title>Are you sure?</Modal.Title>
-            </Modal.Header>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure?</Modal.Title>
+        </Modal.Header>
 
-            <Modal.Body>
-              <p>
-                This operation will completely remove this post from the app.
-                Are you sure you want to do that?
-              </p>
-            </Modal.Body>
+        <Modal.Body>
+          <p>
+            This operation will completely remove this post from the app. Are
+            you sure you want to do that?
+          </p>
+        </Modal.Body>
 
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowModal(false)}>
-                Cancel
-              </Button>
-              <Button variant="primary" onClick={deleteAd}>
-                Remove
-              </Button>
-            </Modal.Footer>
-          </Modal.Dialog>
-        </div>
-      )}
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={deleteAd}>
+            Remove
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
