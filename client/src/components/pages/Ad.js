@@ -1,25 +1,38 @@
 import { useSelector } from 'react-redux';
-import { getAdById } from '../../redux/adsRedux';
 import { useParams } from 'react-router';
 import { Link, Navigate } from 'react-router-dom';
 import { removeCard } from '../../redux/adsRedux';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DateToStr from '../../utils/dateToStr';
 import { IMGS_URL, API_URL } from '../../config';
 import { getUser } from '../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
+import { Container, Spinner } from 'react-bootstrap';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 const Ad = () => {
   const { adId } = useParams();
-  const ad = useSelector((state) => getAdById(state, adId));
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const user = useSelector(getUser);
   const navigate = useNavigate();
+  const [ad, setAd] = useState(null);
+  const [loading, setLoading] = useState(null);
+
+  useEffect(() => {
+    if (adId) {
+      setLoading(true);
+      fetch(`${API_URL}/ads/${adId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setLoading(false);
+          setAd(data);
+        });
+    }
+  }, [adId]);
 
   const deleteAd = (e) => {
     e.preventDefault();
@@ -36,6 +49,19 @@ const Ad = () => {
       }, 10);
     });
   };
+
+  if (loading) {
+    return (
+      <Container className="d-flex justify-content-center">
+        <div
+          className="d-flex align-items-center"
+          style={{ marginTop: '250px' }}
+        >
+          <Spinner animation="border" />
+        </div>
+      </Container>
+    );
+  }
 
   if (!ad) return <Navigate to="/" />;
   return (
