@@ -54,7 +54,7 @@ const SearchResults = () => {
                   />
                   <button type="button" className="btn btn-primary ">
                     <NavLink
-                      to={'/ads/' + ad.id}
+                      to={'/ads/' + ad._id}
                       className="text-decoration-none text-light"
                     >
                       Read more

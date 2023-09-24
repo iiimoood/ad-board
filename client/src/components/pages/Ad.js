@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Link, Navigate } from 'react-router-dom';
-import { removeCard } from '../../redux/adsRedux';
+import { removeCard, fetchAds } from '../../redux/adsRedux';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import DateToStr from '../../utils/dateToStr';
@@ -20,7 +20,7 @@ const Ad = () => {
   const user = useSelector(getUser);
   const navigate = useNavigate();
   const [ad, setAd] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (adId) {
@@ -28,8 +28,8 @@ const Ad = () => {
       fetch(`${API_URL}/ads/${adId}`)
         .then((res) => res.json())
         .then((data) => {
-          setLoading(false);
           setAd(data);
+          setLoading(false);
         });
     }
   }, [adId]);
@@ -42,11 +42,12 @@ const Ad = () => {
       credentials: 'include',
     };
 
-    fetch(`${API_URL}/ads/:id`, options).then(() => {
+    fetch(`${API_URL}/ads/${adId}`, options).then(() => {
       dispatch(removeCard(ad.id));
       setTimeout(() => {
         navigate('/');
       }, 10);
+      dispatch(fetchAds());
     });
   };
 
@@ -69,31 +70,48 @@ const Ad = () => {
       <div className="card d-flex flex-row w-75 border-0 m-auto">
         <div className="card-body">
           <h3 className="card-title">{ad.title}</h3>
-          <p>
-            <span className="fw-bold">Date of publication: </span>
-            {DateToStr(ad.dateOfPublication)}
-          </p>
-          <p>
-            <span className="fw-bold">Price:</span> {ad.price}
-          </p>
-          <p>
-            <span className="fw-bold">Location:</span> {ad.location}
-          </p>
-          <p>
-            <span className="fw-bold">Seller:</span> {ad.seller.login} Phone:{' '}
-            {ad.seller.phone}
-          </p>
-          <img src={IMGS_URL + ad.seller.avatar} alt="" />
+          <div className="d-flex column">
+            <div className="w-50">
+              <p>
+                <span className="fw-bold">Date of publication: </span>
+                {DateToStr(new Date(ad.dateOfPublication))}
+              </p>
+              <p>
+                <span className="fw-bold">Price:</span> {ad.price}
+              </p>
+              <p>
+                <span className="fw-bold">Location:</span> {ad.location}
+              </p>
+            </div>
+            <div className="d-flex column w-50 justify-content-center">
+              <img
+                src={IMGS_URL + ad.seller.avatar}
+                alt=""
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  objectFit: 'cover',
+                  borderRadius: '50%',
+                  marginRight: '20px',
+                }}
+              />
+              <p className="d-flex align-content-center row">
+                <span className="fw-bold">{ad.seller.login}</span>
+                <span>{ad.seller.phone}</span>
+              </p>
+            </div>
+          </div>
+
           <p dangerouslySetInnerHTML={{ __html: ad.content }} />
           <img
             src={IMGS_URL + ad.photo}
             alt=""
-            style={{ width: '80%', height: '200px', objectFit: 'cover' }}
+            style={{ width: '100%', height: '300px', objectFit: 'cover' }}
           />
         </div>
         {user && user.login === ad.seller.login && (
           <div>
-            <Link to={'/ad/edit/' + ad.id}>
+            <Link to={'/ad/edit/' + ad._id}>
               <button type="button" className="btn btn-outline-primary me-2">
                 Edit
               </button>

@@ -33,6 +33,7 @@ const Register = () => {
           setStatus('success');
         } else if (res.status === 400) {
           setStatus('clientError');
+          console.log(res);
         } else if (res.status === 409) {
           setStatus('loginError');
         } else {

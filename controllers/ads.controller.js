@@ -37,7 +37,7 @@ exports.postNew = async (req, res) => {
       location &&
       typeof location === 'string' &&
       req.file &&
-      ['image/png', 'image/jpg', 'image.jpeg'].includes(fileType)
+      ['image/png', 'image/jpg', 'image/jpeg'].includes(fileType)
     ) {
       const newAd = new Ad({
         title: title,
@@ -65,7 +65,7 @@ exports.postNew = async (req, res) => {
 };
 
 exports.putChanged = async (req, res) => {
-  const { title, content, dateOfPublication, photo, price, location, seller } =
+  const { title, content, dateOfPublication, photo, price, location } =
     req.body;
 
   try {
@@ -80,7 +80,6 @@ exports.putChanged = async (req, res) => {
       ad.photo = photo;
       ad.price = price;
       ad.location = location;
-      ad.seller = seller;
       if (req.file) {
         ad.photo = req.file.filename;
         fs.unlinkSync(`./public/uploads/${oldPhoto}`);

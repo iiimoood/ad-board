@@ -17,7 +17,7 @@ const AdForm = ({ action, actionText, ...props }) => {
 
   const [title, setTitle] = useState(props.title || '');
   const [dateOfPublication, setDateOfPublication] = useState(
-    props.dateOfPublication || ''
+    props.dateOfPublication ? new Date(props.dateOfPublication) : null
   );
   const [price, setPrice] = useState(props.price || '');
   const [location, setLocation] = useState(props.location || '');
@@ -46,7 +46,7 @@ const AdForm = ({ action, actionText, ...props }) => {
 
   return (
     <form onSubmit={validate(handleSubmit)}>
-      <div className="form-group mb-2">
+      <div className="form-group mb-3">
         <label>Title</label>
         <input
           {...register('title', { required: true })}
@@ -63,9 +63,10 @@ const AdForm = ({ action, actionText, ...props }) => {
           </small>
         )}
       </div>
-      <div className="form-group mb-2">
+      <div className="form-group mb-3 d-flex row">
         <label>Date of publication</label>
         <DatePicker
+          className="w-25 form-control"
           selected={dateOfPublication}
           onChange={(date) => setDateOfPublication(date)}
         />
@@ -75,7 +76,7 @@ const AdForm = ({ action, actionText, ...props }) => {
           </small>
         )}
       </div>
-      <div className="form-group mb-2">
+      <div className="form-group mb-3">
         <label>Price</label>
         <input
           {...register('price', { required: true, min: 1 })}
@@ -92,7 +93,7 @@ const AdForm = ({ action, actionText, ...props }) => {
           </small>
         )}
       </div>
-      <div className="form-group mb-2">
+      <div className="form-group mb-3">
         <label>Location</label>
         <input
           {...register('location', { required: true })}
@@ -109,7 +110,7 @@ const AdForm = ({ action, actionText, ...props }) => {
           </small>
         )}
       </div>
-      <div className="form-group mb-2">
+      <div className="form-group mb-3">
         <label>Content</label>
         <ReactQuill
           theme="snow"
@@ -123,7 +124,7 @@ const AdForm = ({ action, actionText, ...props }) => {
           </small>
         )}
       </div>
-      <div className="form-group mb-2">
+      <div className="form-group mb-3 d-flex row">
         <label>Photo</label>
         <input
           type="file"

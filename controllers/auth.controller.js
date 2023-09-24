@@ -14,7 +14,7 @@ exports.register = async (req, res) => {
       password &&
       typeof password === 'string' &&
       req.file &&
-      ['image/png', 'image/jpg', 'image.jpeg'].includes(fileType)
+      ['image/png', 'image/jpg', 'image/jpeg'].includes(fileType)
     ) {
       const userWithLogin = await User.findOne({ login });
       if (userWithLogin) {
